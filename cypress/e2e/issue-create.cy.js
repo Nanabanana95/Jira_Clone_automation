@@ -3,6 +3,12 @@ import { NumberModule, faker } from '@faker-js/faker';
 const randomTitle = faker.word.adjective()
 const randomWord = faker.word.adjective()
 
+const submitButton = 'button[type="submit"]';
+const issueModal = '[data-testid="modal:issue-create"]';
+const title = 'input[name="title"]';
+const issueType = '[data-testid="select:type"]';
+const descriptionField = '.ql-editor';
+
 describe('Issue create', () => {
   beforeEach(() => {
     cy.visit('/');
@@ -63,18 +69,18 @@ describe('Issue create', () => {
 
   it('Test 1. Should create an issue and validate it successfully', () => {
     //System finds modal for creating issue and does next steps inside of it
-    cy.get('[data-testid="modal:issue-create"]').within(() => {
+    cy.get(issueModal).within(() => {
 
       //open issue type dropdown and choose Bug
-      cy.get('[data-testid="select:type"]').click()
+      cy.get(issueType).click()
       cy.get('[data-testid="select-option:Bug"]')
         .trigger('click');
 
       //Type value to description input field
-      cy.get('.ql-editor').type('My bug description');
+      cy.get(descriptionField).type('My bug description');
 
       //Type value to title input field
-      cy.get('input[name="title"]').type('Bug');
+      cy.get(title).type('Bug');
 
       //Select Pickle Rick from reporter dropdown
       cy.get('[data-testid="select:reporterId"]').click();
@@ -85,11 +91,11 @@ describe('Issue create', () => {
       cy.get('[data-testid="select-option:Highest"]').click()
 
       //Click on button "Create issue"
-      cy.get('button[type="submit"]').click();
+      cy.get(submitButton).click();
     });
 
     //Assert that modal window is closed and successful message is visible
-    cy.get('[data-testid="modal:issue-create"]').should('not.exist');
+    cy.get(issueModal).should('not.exist');
     cy.contains('Issue has been successfully created.').should('be.visible');
 
     //Reload the page to be able to see recently created issue
@@ -100,14 +106,14 @@ describe('Issue create', () => {
 
   it.only('Test 2. Should create an issue using random data plugin', () => {
     //System finds modal for creating issue and does next steps inside of it
-    cy.get('[data-testid="modal:issue-create"]').within(() => {
+    cy.get(issueModal).within(() => {
 
       //open issue type dropdown and choose Task
 
 
       //Type random value to description and title input field
-      cy.get('.ql-editor').type(randomWord);
-      cy.get('input[name="title"]').type(randomTitle);
+      cy.get(descriptionField).type(randomWord);
+      cy.get(title).type(randomTitle);
 
       //Select Baby Yoda from reporter dropdown
       cy.get('[data-testid="select:reporterId"]').click();
@@ -118,11 +124,11 @@ describe('Issue create', () => {
       cy.get('[data-testid="select-option:Low"]').click()
 
       //Click on button "Create issue"
-      cy.get('button[type="submit"]').click();
+      cy.get(submitButton).click();
     });
 
     //Assert that modal window is closed and successful message is visible
-    cy.get('[data-testid="modal:issue-create"]').should('not.exist');
+    cy.get(issueModal).should('not.exist');
     cy.contains('Issue has been successfully created.').should('be.visible');
 
     //Reload the page to be able to see recently created issue
@@ -133,9 +139,9 @@ describe('Issue create', () => {
 
   it('Should validate title is required field if missing', () => {
     //System finds modal for creating issue and does next steps inside of it
-    cy.get('[data-testid="modal:issue-create"]').within(() => {
+    cy.get(issueModal).within(() => {
       //Try to click create issue button without filling any data
-      cy.get('button[type="submit"]').click();
+      cy.get(submitButton).click();
 
       //Assert that correct error message is visible
       cy.get('[data-testid="form-field:title"]').should('contain', 'This field is required');
