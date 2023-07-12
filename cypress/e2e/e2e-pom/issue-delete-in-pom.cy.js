@@ -21,7 +21,7 @@ describe('Issue delete', () => {
     IssueModal.confirmDeletion();
   });
 
-  it.only('Should cancel deletion process successfully', () => {
+  it('Should cancel deletion process successfully', () => {
     IssueModal.clickDeleteButton();
     IssueModal.cancelDeletion();
   });
