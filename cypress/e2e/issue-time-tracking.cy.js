@@ -33,7 +33,8 @@ describe('TIME TRACKING FUNCTIONALITY', () => {
         cy.get('[placeholder="Number"]').type(10);
         cy.get('[data-testid="icon:close"]').first().click();
         IssueModal.openIssue();
-        //cy.get('input[placeholder="Number"]').should('have.value', 10); JIRA CLONE BUG!!!(sometimes is not saved and thus might fail)
+        //JIRA CLONE BUG!!!( is not saved and thus might fail)
+        //cy.get('input[placeholder="Number"]').should('have.value', 10);
         //Update estimation from 10 to 20. COULD NOT BE TESTED
         //cy.get('[placeholder="Number"]').clear().type(20);
         //cy.get('[data-testid="icon:close"]').first().click();
