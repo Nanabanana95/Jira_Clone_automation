@@ -106,6 +106,13 @@ class IssueModal {
         cy.get(this.issueDetailModal).get(this.closeDetailModalButton).first().click();
         cy.get(this.issueDetailModal).should('not.exist');
     }
-}
 
+    openIssue(){
+        cy.get(this.backlogList).should('be.visible').and('have.length', '1').within(() => {
+            cy.get(this.issuesList).should('have.length', '5')
+                .first()
+                .click({ force: true })
+        });
+    }
+}
 export default new IssueModal();
