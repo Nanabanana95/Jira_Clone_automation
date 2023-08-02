@@ -14,8 +14,9 @@ class IssueModal {
         this.cancelDeletionButtonName = "Cancel";
         this.confirmationPopup = '[data-testid="modal:confirm"]';
         this.closeDetailModalButton = '[data-testid="icon:close"]';
+        
     }
-
+    
     getIssueModal() {
         return cy.get(this.issueModal);
     }
