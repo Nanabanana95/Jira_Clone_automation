@@ -148,7 +148,7 @@ describe('Issue create', () => {
     });
   });
 
-  it.only('Task 3. Verify that application is removing unnecessary spaces on the board view.', () => {
+  it('Task 3. Verify that application is removing unnecessary spaces on the board view.', () => {
     const expectedAmountIssues = '5';
     const issueDetails = {
       title: "Hello   world",
