@@ -70,6 +70,19 @@ class IssueModal {
         });
     }
 
+    ensureIssueIsCreatedForTaskIII(expectedAmountIssues, issueDetails) {
+        cy.get(this.issueModal).should('not.exist');
+        cy.reload();
+        cy.contains('Issue has been successfully created.').should('not.exist');
+
+        cy.get(this.backlogList).should('be.visible').and('have.length', '1').within(() => {
+            cy.get(this.issuesList)
+                .should('have.length', expectedAmountIssues)
+                .first()
+                .find('p')
+            cy.get(`[data-testid="avatar:${issueDetails.assignee}"]`).should('be.visible');
+        });
+    }
     ensureIssueIsVisibleOnBoard(issueTitle){
         cy.get(this.issueDetailModal).should('not.exist');
         cy.reload();

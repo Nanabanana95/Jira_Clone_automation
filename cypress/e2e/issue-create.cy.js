@@ -1,5 +1,5 @@
 import { NumberModule, faker } from '@faker-js/faker';
-
+import IssueModal from "../pages/IssueModal";
 const randomTitle = faker.word.adjective()
 const randomWord = faker.word.adjective()
 
@@ -104,7 +104,7 @@ describe('Issue create', () => {
     cy.contains('Issue has been successfully created.').should('not.exist');
   });
 
-  it.only('Test 2. Should create an issue using random data plugin', () => {
+  it('Test 2. Should create an issue using random data plugin', () => {
     //System finds modal for creating issue and does next steps inside of it
     cy.get(issueModal).within(() => {
 
@@ -146,5 +146,22 @@ describe('Issue create', () => {
       //Assert that correct error message is visible
       cy.get('[data-testid="form-field:title"]').should('contain', 'This field is required');
     });
+  });
+
+  it.only('Task 3. Verify that application is removing unnecessary spaces on the board view.', () => {
+    const expectedAmountIssues = '5';
+    const issueDetails = {
+      title: "Hello   world",
+      type: "Bug",
+      description: "TEST_DESCRIPTION",
+      assignee: "Lord Gaben",
+    };
+    //Create issue with multiple spaces between words in title
+    //issue on the board will not have extra spaces and be trimmed
+    IssueModal.createIssue(issueDetails);
+    IssueModal.ensureIssueIsCreatedForTaskIII(expectedAmountIssues, issueDetails);
+    //Open issue and assert this title with predefined variable, but remove extra spaces from it
+    IssueModal.openIssue();
+    //cy.get(issueDetails.title).trim();//GET STUCK
   });
 });
