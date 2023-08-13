@@ -6,26 +6,25 @@ const issueDetails = {
     description: "TEST_DESCRIPTION",
     assignee: "Lord Gaben",
 };
-const title = 'titletitle'
+const title = 'titletitle';
+
 describe('TIME TRACKING FUNCTIONALITY', () => {
     beforeEach(() => {
         cy.visit('/');
         cy.url().should('eq', `${Cypress.env('baseUrl')}project/board`).then((url) => {
+             //System will already open issue creating modal in beforeEach block
+            cy.visit(url + '/board?modal-issue-create=true');
+            //Create issue
+            IssueModal.createIssue(issueDetails);
+            cy.get('[data-testid="modal:issue-create"]').should('not.exist');
+            cy.contains('Issue has been successfully created.').should('be.visible');
+            cy.reload();
+            cy.contains('Issue has been successfully created.').should('not.exist');
         });
     });
 
-    it('Create an issue, then add/update/remove estimation', () => {
-        //Create issue
-        cy.get('[data-testid="icon:plus"]').click();
-        IssueModal.createIssue(issueDetails);
-        cy.get('[data-testid="modal:issue-create"]').should('not.exist');
-        cy.contains('Issue has been successfully created.').should('be.visible');
-        cy.reload();
-        cy.contains('Issue has been successfully created.').should('not.exist');
-        
-        //Open issue
+    it('Should add/update/remove estimation time', () => {
         IssueModal.openIssue();
-        
         //Check that time tracker has no spent time added
         cy.contains('No time logged').should('be.visible');
         
@@ -33,7 +32,7 @@ describe('TIME TRACKING FUNCTIONALITY', () => {
         cy.get('[placeholder="Number"]').type(10);
         cy.get('[data-testid="icon:close"]').first().click();
         IssueModal.openIssue();
-        //JIRA CLONE BUG!!!( is not saved and thus might fail)
+        //JIRA CLONE APPLICATION BUG!!!( is not saved and thus might fail)
         //cy.get('input[placeholder="Number"]').should('have.value', 10);
         //Update estimation from 10 to 20. COULD NOT BE TESTED
         //cy.get('[placeholder="Number"]').clear().type(20);
@@ -49,13 +48,6 @@ describe('TIME TRACKING FUNCTIONALITY', () => {
     });
 
     it('Time logging functionality. Add log time. Remove log time', () => {
-        //Create issue and then open it
-        cy.get('[data-testid="icon:plus"]').click();
-        IssueModal.createIssue(issueDetails);
-        cy.get('[data-testid="modal:issue-create"]').should('not.exist');
-        cy.contains('Issue has been successfully created.').should('be.visible');
-        cy.reload();
-        cy.contains('Issue has been successfully created.').should('not.exist');
         IssueModal.openIssue();
         //Click on time tracking section to add log time
         cy.get('[data-testid="icon:stopwatch"]').click();

@@ -69,7 +69,7 @@ describe('Issue comments creating, editing and deleting', () => {
             .should('not.exist');
     });
 
-    it.only('Comprehensive test', () => {
+    it('Comprehensive test', () => {
         const comment = 'TEST_COMMENT';
         const comment_edited = 'TEST_COMMENT_EDITED';
 

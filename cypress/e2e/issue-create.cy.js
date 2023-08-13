@@ -1,13 +1,20 @@
 import { NumberModule, faker } from '@faker-js/faker';
 import IssueModal from "../pages/IssueModal";
+
 const randomTitle = faker.word.adjective()
 const randomWord = faker.word.adjective()
-
 const submitButton = 'button[type="submit"]';
 const issueModal = '[data-testid="modal:issue-create"]';
 const title = 'input[name="title"]';
 const issueType = '[data-testid="select:type"]';
 const descriptionField = '.ql-editor';
+const selectType = '[data-testid="select:type"]';
+const selectOptionStory = '[data-testid="select-option:Story"]';
+const selectOptionLordGaben = '[data-testid="select-option:Lord Gaben"]';
+const selectOptionBabyYoda = '[data-testid="select-option:Baby Yoda"]';
+const modalIssueCreate = '[data-testid="modal:issue-create"]';
+const listIssue = '[data-testid="list-issue"]';
+
 
 describe('Issue create', () => {
   beforeEach(() => {
@@ -18,16 +25,15 @@ describe('Issue create', () => {
     });
   });
 
-
   it('Should create an issue and validate it successfully', () => {
     //System finds modal for creating issue and does next steps inside of it
-    cy.get('[data-testid="modal:issue-create"]').within(() => {
+    cy.get(issueModal).within(() => {
       
       //open issue type dropdown and choose Story
-      cy.get('[data-testid="select:type"]').click();
-      cy.get('[data-testid="select-option:Story"]')
+      cy.get(selectType).click();
+      cy.get(selectOptionStory)
           .trigger('click');
-            
+
       //Type value to description input field
       cy.get('.ql-editor').type('TEST_DESCRIPTION');
 
@@ -38,14 +44,14 @@ describe('Issue create', () => {
       
       //Select Lord Gaben from reporter dropdown
       cy.get('[data-testid="select:userIds"]').click();
-      cy.get('[data-testid="select-option:Lord Gaben"]').click();
+      cy.get(selectOptionLordGaben).click();
 
       //Click on button "Create issue"
-      cy.get('button[type="submit"]').click();
+      cy.get(submitButton).click();
     });
 
     //Assert that modal window is closed and successful message is visible
-    cy.get('[data-testid="modal:issue-create"]').should('not.exist');
+    cy.get(modalIssueCreate).should('not.exist');
     cy.contains('Issue has been successfully created.').should('be.visible');
     
     //Reload the page to be able to see recently created issue
@@ -56,7 +62,7 @@ describe('Issue create', () => {
     //Assert than only one list with name Backlog is visible and do steps inside of it
     cy.get('[data-testid="board-list:backlog').should('be.visible').and('have.length', '1').within(() => {
       //Assert that this list contains 5 issues and first element with tag p has specified text
-      cy.get('[data-testid="list-issue"]')
+      cy.get(listIssue)
           .should('have.length', '5')
           .first()
           .find('p')
@@ -117,7 +123,7 @@ describe('Issue create', () => {
 
       //Select Baby Yoda from reporter dropdown
       cy.get('[data-testid="select:reporterId"]').click();
-      cy.get('[data-testid="select-option:Baby Yoda"]').click();
+      cy.get(selectOptionBabyYoda).click();
 
       //Select low priority
       cy.get('[data-testid="select:priority"]').click()
@@ -149,19 +155,20 @@ describe('Issue create', () => {
   });
 
   it('Task 3. Verify that application is removing unnecessary spaces on the board view.', () => {
-    const expectedAmountIssues = '5';
-    const issueDetails = {
-      title: "Hello   world",
-      type: "Bug",
-      description: "TEST_DESCRIPTION",
-      assignee: "Lord Gaben",
-    };
-    //Create issue with multiple spaces between words in title
-    //issue on the board will not have extra spaces and be trimmed
-    IssueModal.createIssue(issueDetails);
-    IssueModal.ensureIssueIsCreatedForTaskIII(expectedAmountIssues, issueDetails);
-    //Open issue and assert this title with predefined variable, but remove extra spaces from it
-    IssueModal.openIssue();
-    //cy.get(issueDetails.title).trim();//GET STUCK
+    const title = ' Hello world ';
+    cy.get(modalIssueCreate).within(() => {
+      cy.get('.ql-editor').type('TEST_DESCRIPTION');
+      cy.get('input[name="title"]').debounced('type', title);
+      cy.get(submitButton).click();
+    });
+    cy.get(modalIssueCreate).should('not.exist');
+    cy.contains('Issue has been successfully created.').should('be.visible');
+    cy.reload();
+    cy.contains('Issue has been successfully created.').should('not.exist');
+    cy.get('[data-testid="board-list:backlog').within(() => {
+      cy.get(listIssue).first().find('p')
+        .click()
+        .should('contain', title.trim())
+    });
   });
 });
