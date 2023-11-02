@@ -77,15 +77,19 @@ describe('Issue details editing', () => {
   it('Should check, that priority fields has ${numberOfPriorities} values', () => {
     const numberOfPriorities = 5;
     let priorities = [];
+
     //add already chosen priority to the list
     cy.get(selectPriority).invoke('text').then((extractedPriority) => {
       priorities.push(extractedPriority);
     })
+
     //click to open priority dropdown - options
     cy.get(selectPriority).click();
+
     //get number of options from the page
     cy.get('[data-select-option-value]').then(($options) => {
       const itemCount = Cypress.$($options).length;
+
       //iterate through the options and
       //add text from each option to the list
       for (let index = 0; index < itemCount; index++) {
