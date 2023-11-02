@@ -12,6 +12,7 @@ describe('Issue delete', () => {
             cy.contains('This is an issue of type: Task.').click();
         });
     });
+    
     it('Test 1. Deleting the issue', () => {
         // Click on trash icon and assert that the confirm modal is visible
         cy.get(deleteButton).should('be.visible').click()

@@ -1,4 +1,4 @@
-class IssueModal {
+class IssueModal { 
     constructor() {
         this.submitButton = 'button[type="submit"]';
         this.issueModal = '[data-testid="modal:issue-create"]';
@@ -14,9 +14,8 @@ class IssueModal {
         this.cancelDeletionButtonName = "Cancel";
         this.confirmationPopup = '[data-testid="modal:confirm"]';
         this.closeDetailModalButton = '[data-testid="icon:close"]';
-        
     }
-    
+
     getIssueModal() {
         return cy.get(this.issueModal);
     }
@@ -36,6 +35,7 @@ class IssueModal {
         cy.get(this.assignee).click('bottomRight');
         cy.get(`[data-testid="select-option:${assigneeName}"]`).click();
     }
+    
 
     editTitle(title) {
         cy.get(this.title).debounced('type', title);
@@ -83,6 +83,7 @@ class IssueModal {
             cy.get(`[data-testid="avatar:${issueDetails.assignee}"]`).should('be.visible');
         });
     }
+
     ensureIssueIsVisibleOnBoard(issueTitle){
         cy.get(this.issueDetailModal).should('not.exist');
         cy.reload();

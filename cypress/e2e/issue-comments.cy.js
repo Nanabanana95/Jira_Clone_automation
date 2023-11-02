@@ -97,6 +97,5 @@ describe('Issue comments creating, editing and deleting', () => {
         cy.get('[data-testid="modal:confirm"]').contains('button', 'Delete comment')
             .click().should('not.exist');
         getIssueDetailsModal().contains(comment_edited).should('not.exist');
-
     });
 });

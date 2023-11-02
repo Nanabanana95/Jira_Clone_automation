@@ -1,5 +1,3 @@
-import IssueModal from "../pages/IssueModal";
-
 const selectType = '[data-testid="select:type"]';
 const selectOptionStory = '[data-testid="select-option:Story"]';
 const selectAssignees = '[data-testid="select:assignees"]';
@@ -99,11 +97,11 @@ describe('Issue details editing', () => {
               expect(priorities.length).to.be.eq(numberOfPriorities);
             }
           });
-      };
+        };
     });
   });
 
-  it('Task 2. Repoter name should contain only characters in it. Practice usage of string functions. Regex', () => {
+  it('Task 2. Repoter name should contain only characters in it. Regex', () => {
     const regex = /^[A-Za-z\s]*$/;
     getIssueDetailsModal().within(() => {
       cy.get(selectReporter).click()

@@ -1,4 +1,7 @@
 # Jira Clone tests
+Project for Jira clone web application, similar to original app.
+Here, I demonstrate the creation of automation tests for creating, deleting, editing existing issues, adding comments, and implementing time tracking functionality.
+Using OOP and POM methods.
 
 ## Installation
 
@@ -9,11 +12,6 @@ Install the dependencies.
 ```sh
 npm i
 ```
-
-## Run tests
-
-Run all tests available via first command.
-You can specify other browser to run tests as well.
 
 ```sh
 npx cypress run

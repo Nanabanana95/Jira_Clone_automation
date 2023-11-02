@@ -1,5 +1,4 @@
 import { NumberModule, faker } from '@faker-js/faker';
-import IssueModal from "../pages/IssueModal";
 
 const randomTitle = faker.word.adjective()
 const randomWord = faker.word.adjective()
@@ -156,11 +155,13 @@ describe('Issue create', () => {
 
   it('Task 3. Verify that application is removing unnecessary spaces on the board view.', () => {
     const title = ' Hello world ';
+    
     cy.get(modalIssueCreate).within(() => {
       cy.get('.ql-editor').type('TEST_DESCRIPTION');
       cy.get('input[name="title"]').debounced('type', title);
       cy.get(submitButton).click();
     });
+
     cy.get(modalIssueCreate).should('not.exist');
     cy.contains('Issue has been successfully created.').should('be.visible');
     cy.reload();
